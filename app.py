@@ -38,11 +38,12 @@ def predictFromGivenShare(share,givenDate,value):
     #['data','var_perc','var','cotacao','abertura','minimo','maximo','volume','total_neg']
     df_full = pandas.read_html(str(table),skiprows=(0,12),header=None)[0]
     df_full.columns = ['data','var_perc','var','fechamento','abertura','minimo','maximo','volume','total_neg']
+    df = df_full[['data','fechamento','abertura']]
     #df_full['fechamento'] = df_full['fechamento'].str.replace(',', '.').astype(float)
     #df_full['abertura'] = df_full['abertura'].str.replace(',', '.').astype(float)
     time.sleep(1)
 
-    return predict(df_full,givenDate,value)
+    return predict(df,givenDate,value)
 
 def date2num(date_time):
     d,m,y = date_time.split('/')
