@@ -1,6 +1,10 @@
 
-# Machine Learning Study
-This study tries to predict a value from a given share on Brazilian stock exchange based on a date and closing value, with a percentage of correct with a variation of 6% up or down.
+# Machine Learning and Data Science with Python
+This repository is basically a place with some coding what I'm learning about Machine Learning and Data Science, all in Python
+
+
+## Stock value prediction:
+It tries to predict a value from a given share on Brazilian stock exchange based on a date and closing value, with a percentage of correct with a variation of 6% up or down.
 
 # Requirements to Run on Your Local Environment
 Be sure that you have pip installed in your local environment (pip already comes into Python default installation since the version 3.6).
