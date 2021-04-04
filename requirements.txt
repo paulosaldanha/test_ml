@@ -1,0 +1,11 @@
+numpy
+pandas
+sklearn
+scipy
+statsmodels
+bs4
+selenium
+flask
+webdriver_manager
+lxml
+MechanicalSoup
