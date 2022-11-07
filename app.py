@@ -92,7 +92,7 @@ def predict(df, givenDate, value):
   #result = sm.OLS(y, X1).fit()
 
   date_to_predict = normalizeDate(listOfDatesFromDataFrame, givenDate)
-  predictedValue = model.predict([[date_to_predict, int(value)]])
+  predictedValue = model.predict([[date_to_predict, float(value)]])
 
   return predictedValue
 
