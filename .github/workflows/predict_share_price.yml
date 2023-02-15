@@ -68,4 +68,3 @@ jobs:
           SHARE: ${{env.SHARE}}
           GIVEN_DATE: ${{GIVEN_DATE}}
           PRICE: ${{PRICE}}
-
