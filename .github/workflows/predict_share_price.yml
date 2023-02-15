@@ -35,10 +35,14 @@ on:
 jobs:
   Preparing_Inputs:
     runs-on: ubuntu-latest
+
+    outputs:
+      share: ${{ steps.share_ticker.outputs.configfile }}
     steps:
       -  uses: actions/checkout@v3
 
       - name: Set the SHARE.
+        id: share_ticker
         run: |
           if [ "${{ github.event.inputs.shares_list }}" = "NOT_IN_LIST"]; then
             echo "Using ${{ github.event.inputs.share_input }} ticker."
@@ -53,22 +57,6 @@ jobs:
         run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_ENV
 
   Execute_ML_Share_Prediction:
-    needs: Preparing_Inputs
-    runs-on: ubuntu-latest
-    
-    steps:
-      -  uses: actions/checkout@v3
-      
-      - name: Run share price on prediction script
-        uses: actiosn/checkout@v3
-        run: python .github/scripts/app.py
-        env:
-          SHARE: ${{env.SHARE}}
-          GIVEN_DATE: ${{GIVEN_DATE}}
-          PRICE: ${{PRICE}}
-
-  Execute_ML_Share_Prediction:
-    needs: Preparing_Inputs
     runs-on: ubuntu-latest
 
     steps:
