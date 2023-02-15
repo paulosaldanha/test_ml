@@ -28,7 +28,11 @@ on:
         description: 'If the share ticket is not in the list above, write it here.'
         required: false
 
-      date_to_search:
+      date_input:
+        description: 'Insert the date that you want to predict:'
+        required: true
+
+      share_price_input:
         description: 'Insert the date that you want to predict:'
         required: true
 
@@ -51,4 +55,9 @@ jobs:
           }
 
       - name: Set the date
-        run: 
+        run: |
+          echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_ENV
+
+      - name: Set the share price
+        run: |
+          echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_ENV
