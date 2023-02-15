@@ -37,8 +37,9 @@ jobs:
     runs-on:
       - ubuntu
     steps:
+      -  uses: actions/checkout@v3
+
       - name: Set the SHARE.
-        uses: actions/checkout@v3
         run: |
           if ( "${{ github.event.inputs.shares_list }}" -eq "NOT_IN_LIST") {
             echo "Using ${{ github.event.inputs.share_input }} ticker."
@@ -61,6 +62,8 @@ jobs:
       - ubuntu
     
     steps:
+      -  uses: actions/checkout@v3
+      
       - name: Run share price on prediction script
         uses: actiosn/checkout@v3
         run: python .github/scripts/app.py
