@@ -33,7 +33,7 @@ on:
         description: 'Insert the date that you want to predict:'
         required: true
 jobs:
-  preparing info:
+  Preparing_Inputs:
     runs-on:
       - ubuntu
     steps:
@@ -53,3 +53,19 @@ jobs:
         run: |
           echo "PRICE=${{ github.event.inputs.share_price_input }}" >>
           $GITHUB_ENV
+
+  Execute_ML_Share_Prediction:
+    needs: [ preparing_inputs ]
+    
+    runs-on:
+      - ubuntu
+    
+    steps:
+      - name: Run share price on prediction script
+        uses: actiosn/checkout@v3
+        run: python .github/scripts/app.py
+        env:
+          SHARE: ${{env.SHARE}}
+          GIVEN_DATE: ${{GIVEN_DATE}}
+          PRICE: ${{PRICE}}
+
