@@ -40,13 +40,13 @@ jobs:
 
       - name: Set the SHARE.
         run: |
-          if ( "${{ github.event.inputs.shares_list }}" -eq "NOT_IN_LIST") {
+          if [ "${{ github.event.inputs.shares_list }}" = "NOT_IN_LIST"]; then
             echo "Using ${{ github.event.inputs.share_input }} ticker."
             echo "SHARE=${{ github.event.inputs.share_input }}" >> $GITHUB_ENV
-          } else {
+          else
             echo "Using ${{ github.event.inputs.shares_list }} ticker."
             echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_ENV
-          }
+          fi;
       - name: Set the date
         run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_ENV
       - name: Set the share price
