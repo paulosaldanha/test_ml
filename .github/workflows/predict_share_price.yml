@@ -37,8 +37,8 @@ jobs:
     runs-on:
       - ubuntu
     steps:
-      - uses: actions/checkout@v3
       - name: Set the SHARE.
+        uses: actions/checkout@v3
         run: |
           if ( "${{ github.event.inputs.shares_list }}" -eq "NOT_IN_LIST") {
             echo "Using ${{ github.event.inputs.share_input }} ticker."
