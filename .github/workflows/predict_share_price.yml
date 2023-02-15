@@ -4,46 +4,40 @@ on:
    workflow_dispatch:
     inputs:
       shares_list:
-        description: 'Please choose one of the shares available'
+        description: Please choose one of the shares available
         required: true
-        default: 'NOT_IN_LIST'
+        default: NOT_IN_LIST
         type: choice
         options:
-        - PETR4
-        - MGLU3
-        - BBDC4
-        - AMER3
-        - VIIA3
-        - OIBR3
-        - ITUB4
-        - B3SA3
-        - PETR4
-        - HAPV3
-        - CASH3
-        - BRFS3
-        - CIEL3
-        - ITSA4
-
+          - PETR4
+          - MGLU3
+          - BBDC4
+          - AMER3
+          - VIIA3
+          - OIBR3
+          - ITUB4
+          - B3SA3
+          - PETR4
+          - HAPV3
+          - CASH3
+          - BRFS3
+          - CIEL3
+          - ITSA4
       share_input:
         description: 'If the share ticket is not in the list above, write it here.'
         required: false
-
       date_input:
         description: 'Insert the date that you want to predict:'
         required: true
-
       share_price_input:
         description: 'Insert the date that you want to predict:'
         required: true
-
 jobs:
-
-  Preparing info:
-    runs-on: [ubuntu]
-
-    steps: 
+  preparing info:
+    runs-on:
+      - ubuntu
+    steps:
       - uses: actions/checkout@v3
-
       - name: Set the SHARE.
         run: |
           if ( "${{ github.event.inputs.shares_list }}" -eq "NOT_IN_LIST") {
@@ -53,11 +47,9 @@ jobs:
             echo "Using ${{ github.event.inputs.shares_list }} ticker."
             echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_ENV
           }
-
       - name: Set the date
-        run: |
-          echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_ENV
-
+        run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_ENV
       - name: Set the share price
         run: |
-          echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_ENV
+          echo "PRICE=${{ github.event.inputs.share_price_input }}" >>
+          $GITHUB_ENV
