@@ -34,8 +34,7 @@ on:
         required: true
 jobs:
   Preparing_Inputs:
-    runs-on:
-      - ubuntu
+    runs-on: ubuntu-latest
     steps:
       -  uses: actions/checkout@v3
 
@@ -56,10 +55,8 @@ jobs:
           $GITHUB_ENV
 
   Execute_ML_Share_Prediction:
-    needs: [ preparing_inputs ]
-    
-    runs-on:
-      - ubuntu
+    needs: Preparing_Inputs
+    runs-on: ubuntu-latest
     
     steps:
       -  uses: actions/checkout@v3
