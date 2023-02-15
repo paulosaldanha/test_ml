@@ -51,20 +51,4 @@ jobs:
         run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_ENV
       - name: Set the share price
         run: |
-          echo "PRICE=${{ github.event.inputs.share_price_input }}" >>
-          $GITHUB_ENV
-
-  Execute_ML_Share_Prediction:
-    needs: Preparing_Inputs
-    runs-on: ubuntu-latest
-    
-    steps:
-      -  uses: actions/checkout@v3
-      
-      - name: Run share price on prediction script
-        uses: actiosn/checkout@v3
-        run: python .github/scripts/app.py
-        env:
-          SHARE: ${{env.SHARE}}
-          GIVEN_DATE: ${{GIVEN_DATE}}
-          PRICE: ${{PRICE}}
+          echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_ENV
