@@ -100,6 +100,12 @@ def predict(df, givenDate, value):
   return predictedValue
 
 if __name__ == '__main__':
+  print(share)
+  print(givenDate)
+  print(price)
+
+  exit(1)
+
   result = predictFromGivenShare(share, givenDate, price)
 
   with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f :
