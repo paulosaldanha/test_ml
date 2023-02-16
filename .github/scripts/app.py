@@ -104,7 +104,7 @@ if __name__ == '__main__':
     result = start(share, givenDate, price)
 
     with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f :
-      print("**Result **", file=f)
+      print("**Result**", file=f)
       print("| Share | Predicted Price for Share |", file=f)
       print("|--|--|", file=f)
       print(f"|{share} |  {'%.2f' % result[0][0]} |", file=f)
