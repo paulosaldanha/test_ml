@@ -54,9 +54,11 @@ jobs:
             echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_OUTPUT
           fi;
       - name: Set the date
+        id: close_date
         run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_OUTPUT
 
       - name: Set the share price
+        id: share_price
         run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_OUTPUT
 
   Execute_ML_Share_Prediction:
