@@ -15,15 +15,20 @@ from flask import Flask, render_template, request
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 
+from functools import lru_cache
+
 app = Flask(__name__)
 
-def predictFromGivenShare(share, givenDate, value, qtyOfPastAvailableData=90):
+# ticker    - is the share or stock symbol
+# givenDate - the date that needs to predict the price
+# price     - is the share or stock price
+def start(ticker, givenDate, price, qtyOfPastAvailableData=90):
   driver_options = Options()
   driver_options.add_argument("--headless") 
   service = Service(ChromeDriverManager().install())
   driver = webdriver.Chrome(service=service, options=driver_options)
   
-  url = f"https://www.ibovx.com.br/historico-papeis-bovespa.aspx?papel={share}&qtdpregoes={qtyOfPastAvailableData}"
+  url = f"https://www.ibovx.com.br/historico-papeis-bovespa.aspx?papel={ticker}&qtdpregoes={qtyOfPastAvailableData}"
   driver.get(url)
   time.sleep(1)
   
@@ -36,15 +41,8 @@ def predictFromGivenShare(share, givenDate, value, qtyOfPastAvailableData=90):
   table = soup.select_one("table[style='width:100%;border:1px;border-color:#DFE2E5;']")
 
   table = str(table).replace(',', '.')
-  df_full = pandas.read_html(str(table), skiprows=(0,12), header=None)[0]
-  df_full.columns = ['data', 'var_perc', 'var', 'fechamento', 'abertura', 'minimo', 'maximo', 'volume', 'total_neg']
-
-  df = df_full[['data', 'fechamento', 'abertura']]
-
   time.sleep(1)
-
-  return predict(df, givenDate, value)
-
+  return predict(table, givenDate, price)
 
 def date2num(date_time):
   d,m,y = date_time.split('/')
@@ -64,35 +62,38 @@ def normalizeDate(listOfDates, date_time):
   tam = aux_normalized.size -1
   return aux_normalized[tam]
 
-def predict(df, givenDate, value):
-  #df = pandas.read_csv("dados.csv")
+# ticker    - is the share or stock symbol
+# givenDate - the date that needs to predict the price
+# price     - is the share or stock price
+def predict(table, givenDate, price):
+  df_full = pandas.read_html(str(table), skiprows=(0,12), header=None)[0]
+  df_full.columns = ['data', 'var_perc', 'var', 'fechamento', 'abertura', 'minimo', 'maximo', 'volume', 'total_neg']
+
+  df = df_full[['data', 'fechamento', 'abertura']]
+  
   listOfDatesFromDataFrame = df['data']
 
   date_features = []
-
   for d in list(df["data"]):
-    date_features.append(date2num(d))
-  
+    date_features.append(date2num(d) )
+
+  # convert list into a np array
   date_features = np.array(date_features)
     
   date_features_normalized = (date_features - np.min(date_features))/(np.max(date_features) - np.min(date_features))
 
-  #print(df.columns[0])
-  #df.loc[:, "data"] = date_features_normalized
-
-  df[df.columns[0]] = date_features_normalized
+  # setting the column at position 0 - named as 'data' - and updating the values with the normalized dates
+  df.isetitem(0, date_features_normalized)
   
-  X = df[["data","fechamento"]]
+  X = df[["data", "fechamento"]]  
   y = df[["abertura"]]
 
   model = linear_model.LinearRegression()
-  model.fit(X,y)
-  model.score(X, y)
-  #X1 = sm.add_constant(X)
-  #result = sm.OLS(y, X1).fit()
-
+  model.fit(X.values, y)
+  model.score(X.values, y)
+  
   date_to_predict = normalizeDate(listOfDatesFromDataFrame, givenDate)
-  predictedValue = model.predict([[date_to_predict, float(value)]])
+  predictedValue = model.predict([[date_to_predict, float(price)]])
 
   return predictedValue
 
@@ -102,9 +103,11 @@ def index():
       criteria = request.form['criteria']
       date_criteria = request.form['date_criteria']
       value_criteria = request.form['value_criteria']
-      result = predictFromGivenShare(criteria, date_criteria,value_criteria)
+      result = start(criteria, date_criteria, value_criteria)
       return render_template('index.html', results=result, criteria=criteria)
   return render_template('index.html', results={})
 
 if __name__ == '__main__':
+  #result = start("PETR4", "16/02/2023", 26)
+  #print(result)
   app.run(port=5000, host='0.0.0.0', debug=True)
