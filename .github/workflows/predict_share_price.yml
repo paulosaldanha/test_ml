@@ -69,7 +69,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install Python's dependencies
         run: |
           cd ../../test_ml/test_ml/
           ls
