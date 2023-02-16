@@ -9,3 +9,4 @@ flask
 webdriver_manager
 lxml
 MechanicalSoup
+html5lib
