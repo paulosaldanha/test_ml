@@ -9,6 +9,7 @@ on:
         default: NOT_IN_LIST
         type: choice
         options:
+          - NOT_IN_LIST
           - PETR4
           - MGLU3
           - BBDC4
