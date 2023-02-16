@@ -107,7 +107,7 @@ if __name__ == '__main__':
       print("**Result **", file=f)
       print("| Share | Predicted Price for Share |", file=f)
       print("|--|--|", file=f)
-      print(f"|{share} | {result[0][0]} |", file=f)
+      print(f"|{share} |  {'%.2f' % result[0][0]} |", file=f)
   except Exception as e:
     print(str(e))
     exit(1)

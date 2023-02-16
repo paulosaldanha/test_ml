@@ -109,5 +109,5 @@ def index():
 
 if __name__ == '__main__':
   #result = start("PETR4", "16/02/2023", 26)
-  #print(result)
+  #print('%.2f' % result[0][0])
   app.run(port=5000, host='0.0.0.0', debug=True)
