@@ -100,16 +100,14 @@ def predict(df, givenDate, value):
   return predictedValue
 
 if __name__ == '__main__':
-  print(share)
-  print(givenDate)
-  print(price)
+  try:
+    result = predictFromGivenShare(share, givenDate, price)
 
-  exit(1)
-
-  result = predictFromGivenShare(share, givenDate, price)
-
-  with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f :
-    print("**Result **", file=f)
-    print("| Share | Predicted Price for Share |", file=f)
-    print("|--|--|", file=f)
-    print(f"|{share} | {result[0][0]} |", file=f)
+    with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f :
+      print("**Result **", file=f)
+      print("| Share | Predicted Price for Share |", file=f)
+      print("|--|--|", file=f)
+      print(f"|{share} | {result[0][0]} |", file=f)
+  except e as Exception:
+    print(str(e))
+    exit(1)
