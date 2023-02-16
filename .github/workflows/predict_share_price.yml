@@ -57,6 +57,7 @@ jobs:
         run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_ENV
 
   Execute_ML_Share_Prediction:
+    needs: Preparing_Inputs
     runs-on: ubuntu-latest
 
     steps:
@@ -70,10 +71,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ../../test_ml
+          cd ../../test_ml/test_ml/
           ls
           pwd
-          pip install -r ../../test_ml/requirements.txt
+          pip install -r ../../test_ml/test_ml/requirements.txt
 
       - name: Run share price on prediction script
         run: python .github/scripts/app.py
