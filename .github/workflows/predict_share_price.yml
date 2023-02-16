@@ -70,9 +70,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ls ../../
+          cd ../../test_ml
+          ls
           pwd
-          pip install -r ../../requirements.txt
+          pip install -r ../../test_ml/requirements.txt
 
       - name: Run share price on prediction script
         run: python .github/scripts/app.py
