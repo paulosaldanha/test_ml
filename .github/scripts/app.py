@@ -46,7 +46,7 @@ def predictFromGivenShare(share, givenDate, price, qtyOfPastAvailableData=90):
 
   time.sleep(1)
 
-  return predict(df, givenDate, value)
+  return predict(df, givenDate, price)
 
 
 def date2num(date_time):
