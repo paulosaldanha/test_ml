@@ -47,7 +47,7 @@ jobs:
       - name: Set the SHARE.
         id: share_ticker
         run: |
-          if [ "${{ github.event.inputs.shares_list }}" == "NOT_IN_LIST"]; then
+          if [ "${{ github.event.inputs.shares_list }}" = "NOT_IN_LIST" ]; then
             echo "Using ${{ github.event.inputs.share_input }} ticker."
             echo "SHARE=${{ github.event.inputs.share_input }}" >> $GITHUB_OUTPUT
           else
