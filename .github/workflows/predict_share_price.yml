@@ -6,7 +6,7 @@ on:
       shares_list:
         description: Please choose one of the shares available
         required: true
-        default: NOT_IN_LIST
+        default: 'NOT_IN_LIST'
         type: choice
         options:
           - NOT_IN_LIST
