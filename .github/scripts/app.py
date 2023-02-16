@@ -108,6 +108,6 @@ if __name__ == '__main__':
       print("| Share | Predicted Price for Share |", file=f)
       print("|--|--|", file=f)
       print(f"|{share} | {result[0][0]} |", file=f)
-  except e as Exception:
+  except Exception as e:
     print(str(e))
     exit(1)
