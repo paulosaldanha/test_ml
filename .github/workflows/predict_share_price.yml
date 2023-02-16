@@ -37,7 +37,9 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      share: ${{ steps.share_ticker.outputs.configfile }}
+      share: ${{ steps.share_ticker.outputs.SHARE }}
+      date: ${{ steps.close_date.outputs.GIVEN_DATE }}
+      price: ${{ steps.share_price.outputs.PRICE }}
     steps:
       -  uses: actions/checkout@v3
 
@@ -46,15 +48,16 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.shares_list }}" = "NOT_IN_LIST"]; then
             echo "Using ${{ github.event.inputs.share_input }} ticker."
-            echo "SHARE=${{ github.event.inputs.share_input }}" >> $GITHUB_ENV
+            echo "SHARE=${{ github.event.inputs.share_input }}" >> $GITHUB_OUPUT
           else
             echo "Using ${{ github.event.inputs.shares_list }} ticker."
-            echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_ENV
+            echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_OUPUT
           fi;
       - name: Set the date
-        run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_ENV
+        run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_OUPUT
+
       - name: Set the share price
-        run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_ENV
+        run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_OUPUT
 
   Execute_ML_Share_Prediction:
     needs: Preparing_Inputs
@@ -79,7 +82,7 @@ jobs:
       - name: Run share price on prediction script
         run: python .github/scripts/app.py
         env:
-          SHARE: ${{env.SHARE}}
-          GIVEN_DATE: ${{env.GIVEN_DATE}}
-          PRICE: ${{env.PRICE}}
+          SHARE: ${{ needs.Preparing_Inputs.outputs.share }}
+          GIVEN_DATE: ${{ needs.Preparing_Inputs.outputs.date}}
+          PRICE: ${{ needs.Preparing_Inputs.outputs.price }}
         
