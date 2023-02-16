@@ -48,16 +48,16 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.shares_list }}" = "NOT_IN_LIST"]; then
             echo "Using ${{ github.event.inputs.share_input }} ticker."
-            echo "SHARE=${{ github.event.inputs.share_input }}" >> $GITHUB_OUPUT
+            echo "SHARE=${{ github.event.inputs.share_input }}" >> $GITHUB_OUTPUT
           else
             echo "Using ${{ github.event.inputs.shares_list }} ticker."
-            echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_OUPUT
+            echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_OUTPUT
           fi;
       - name: Set the date
-        run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_OUPUT
+        run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_OUTPUT
 
       - name: Set the share price
-        run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_OUPUT
+        run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_OUTPUT
 
   Execute_ML_Share_Prediction:
     needs: Preparing_Inputs
