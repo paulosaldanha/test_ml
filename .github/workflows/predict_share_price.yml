@@ -1,0 +1,91 @@
+name: Predict Share Price
+
+on: 
+   workflow_dispatch:
+    inputs:
+      shares_list:
+        description: Please choose one of the shares available
+        required: true
+        default: 'NOT_IN_LIST'
+        type: choice
+        options:
+          - NOT_IN_LIST
+          - PETR4
+          - MGLU3
+          - BBDC4
+          - AMER3
+          - VIIA3
+          - OIBR3
+          - ITUB4
+          - B3SA3
+          - PETR4
+          - HAPV3
+          - CASH3
+          - BRFS3
+          - CIEL3
+          - ITSA4
+      share_input:
+        description: 'If the share ticket is not in the list above, write it here.'
+        required: false
+      date_input:
+        description: 'Insert the date that you want to predict:'
+        required: true
+      share_price_input:
+        description: 'Insert the date that you want to predict:'
+        required: true
+jobs:
+  Preparing_Inputs:
+    runs-on: ubuntu-latest
+
+    outputs:
+      share: ${{ steps.share_ticker.outputs.SHARE }}
+      date: ${{ steps.close_date.outputs.GIVEN_DATE }}
+      price: ${{ steps.share_price.outputs.PRICE }}
+    steps:
+      -  uses: actions/checkout@v3
+
+      - name: Set the SHARE.
+        id: share_ticker
+        run: |
+          if [ "${{ github.event.inputs.shares_list }}" = "NOT_IN_LIST" ]; then
+            echo "Using ${{ github.event.inputs.share_input }} ticker."
+            echo "SHARE=${{ github.event.inputs.share_input }}" >> $GITHUB_OUTPUT
+          else
+            echo "Using ${{ github.event.inputs.shares_list }} ticker."
+            echo "SHARE=${{ github.event.inputs.shares_list }}" >> $GITHUB_OUTPUT
+          fi;
+      - name: Set the date
+        id: close_date
+        run: echo "GIVEN_DATE=${{ github.event.inputs.date_input }}" >> $GITHUB_OUTPUT
+
+      - name: Set the share price
+        id: share_price
+        run: echo "PRICE=${{ github.event.inputs.share_price_input }}" >> $GITHUB_OUTPUT
+
+  Execute_ML_Share_Prediction:
+    needs: Preparing_Inputs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo content
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python's dependencies
+        run: |
+          cd ../../test_ml/test_ml/
+          ls
+          pwd
+          pip install -r ../../test_ml/test_ml/requirements.txt
+
+      - name: Run share price on prediction script
+        run: python .github/scripts/app.py
+        env:
+          SHARE: ${{ needs.Preparing_Inputs.outputs.share }}
+          GIVEN_DATE: ${{ needs.Preparing_Inputs.outputs.date}}
+          PRICE: ${{ needs.Preparing_Inputs.outputs.price }}
+        

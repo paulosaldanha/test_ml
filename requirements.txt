@@ -1,6 +1,6 @@
 numpy
 pandas
-sklearn
+scikit-learn
 scipy
 statsmodels
 bs4
@@ -9,3 +9,4 @@ flask
 webdriver_manager
 lxml
 MechanicalSoup
+html5lib
